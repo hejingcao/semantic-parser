@@ -1,0 +1,21 @@
+
+
+所有命令在当前文件夹下
+#+begin_src sh
+
+# 需要的两个 stage 是 ci2 和 rd
+
+# 使用 ConceptIdentifierV2
+python3 train.py ci2 @@ configs/CI...
+python3 train.py rd @@ configs/RD...
+
+# 输入是每行一个原始句子 (没有切词)
+python3 predict.py ci2 \
+        --model <CI_model_dir>/checkpoints/best.pt \
+        --input-format raw
+        --input-path <sentences_file> \
+        --prefix <prefix>
+
+# 移除模型中保存训练状态, 只保留运行必须的参数和配置
+python3 make_release_model.py <model_dir>/checkpoints/best.pt <new_path>
+#+end_src
